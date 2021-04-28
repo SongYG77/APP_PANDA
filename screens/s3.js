@@ -13,8 +13,10 @@ import {
 import { RNS3 } from "react-native-aws3";
 import { launchImageLibrary } from "react-native-image-picker";
 import { State } from "react-native-gesture-handler";
+import Video from 'react-native-video';
 
 const UploadScreen = () => {
+  // class에서 this.state.filePath, this.setState 와 같은 뜻이다.
   const [filePath, setFilePath] = useState({});
   const [uploadSuccessMessage, setUploadSuccessMessage] = useState("");
   const [video_uri, setvideouri] = useState();
@@ -105,7 +107,7 @@ const UploadScreen = () => {
       });
   };
   const updateServer = () => {
-    console.log(video_uri);
+    // console.log(video_uri);
     let show_code = Math.random().toString(36).substr(2, 11);
     fetch("http://3.36.228.255:8088/jpa/S3", {
       method: "POST",
@@ -126,7 +128,8 @@ const UploadScreen = () => {
     setvideouri(null);
     setUploadSuccessMessage(
       `The video has been uploaded.
-      \n- code => ${show_code}`
+      \n- code => ${show_code}
+      \n- url => ${video_uri}`
     );
   };
 

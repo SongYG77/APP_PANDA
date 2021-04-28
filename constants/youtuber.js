@@ -9,6 +9,9 @@ export const youtuber = [
             genre: "롤 유튜버",
             ratings: 7.8,
             subscriber: "84.8만명",
+        },
+        explain: {
+            explain_detail: "",
         }
     },
     {

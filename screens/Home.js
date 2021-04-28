@@ -1,3 +1,4 @@
+import { TestScheduler } from "@jest/core";
 import React from "react";
 import {
   SafeAreaView,

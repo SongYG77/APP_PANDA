@@ -240,7 +240,7 @@ const YoutuberDetail = ({ navigation, route }) => {
     );
   }
 
-  function renderMovieDetails() {
+  function renderYoutuberDetails() {
     return (
       <View
         style={{
@@ -259,6 +259,7 @@ const YoutuberDetail = ({ navigation, route }) => {
             }}
           >
             <Text style={{ flex: 1, color: COLORS.white, ...FONTS.h2 }}>
+                {/* 해당 유튜버 자세한 설명 */}
               {selectedYoutuber?.name} 설명
             </Text>
           </View>
@@ -276,10 +277,10 @@ const YoutuberDetail = ({ navigation, route }) => {
             
           }}
           onPress={() =>
-            navigation.navigate('Apply')
+            navigation.navigate('Apply', {selectedYoutuberName: selectedYoutuber.name})
           }
         >
-          <Text >
+          <Text style={{ ...FONTS.h2 }}>
             {selectedYoutuber?.name}에게 신청하기!
           </Text>
         </TouchableOpacity>
@@ -288,6 +289,7 @@ const YoutuberDetail = ({ navigation, route }) => {
   }
 
   return (
+      
     <ScrollView
       contentContainerStyle={{ flex: 1, backgroundColor: COLORS.black }}
       style={{ backgroundColor: COLORS.black }}
@@ -299,7 +301,7 @@ const YoutuberDetail = ({ navigation, route }) => {
       {renderCategoryAndRatings()}
 
       {/* Movie Details */}
-      {renderMovieDetails()}
+      {renderYoutuberDetails()}
     </ScrollView>
   );
 };
