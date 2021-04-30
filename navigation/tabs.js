@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 
 import { Home } from "../screens"
 import s3  from "../screens/s3";
+import VideoScreen from "../screens/VideoScreen"
 import { COLORS, icons } from "../constants"
 
 import { TabIcon } from "../components"
@@ -52,7 +53,7 @@ const Tabs = () => {
             />
             <Tab.Screen
                 name="Search"
-                component={Home}
+                component={VideoScreen}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <TabIcon

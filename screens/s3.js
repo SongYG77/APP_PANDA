@@ -12,14 +12,14 @@ import {
 } from "react-native";
 import { RNS3 } from "react-native-aws3";
 import { launchImageLibrary } from "react-native-image-picker";
-import { State } from "react-native-gesture-handler";
+import { ScrollView, State } from "react-native-gesture-handler";
 import Video from 'react-native-video';
 
 const UploadScreen = () => {
   // class에서 this.state.filePath, this.setState 와 같은 뜻이다.
   const [filePath, setFilePath] = useState({});
   const [uploadSuccessMessage, setUploadSuccessMessage] = useState("");
-  const [video_uri, setvideouri] = useState();
+  const [video_uri, setvideouri] = useState("");
   const randomValue = () => {
     for (var i = 0; i < 5; i++) {
       value = Math.random() * 5 + 1;
@@ -94,6 +94,7 @@ const UploadScreen = () => {
           \n4. location => ${location}`
         );
         setvideouri(location);
+
         /**
          * {
          *   postResponse: {
@@ -219,5 +220,12 @@ const styles = StyleSheet.create({
     height: "100%",
     resizeMode: "contain",
     margin: 5,
+  },
+  backgroundVideo: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
   },
 });

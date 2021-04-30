@@ -27,14 +27,14 @@ const Apply = ({ navigation, route }) => {
   const [title, onChangeTitle] = useState("제목을 입력해주세요.");
   const [requests, onChangeRequests] = useState("요청사항을 입력해주세요.");
   const [story, onChangeStory] = useState("사연을 입력해주세요.");
-  const [selectedYoutuberName, setSelectedYoutuberName] = useState(null);
-  const [userId, setUserId] = userState("캡스톤");
+  const [selectedName, setSelectedName] = useState(null);
+  //const [userId, setUserId] = userState("캡스톤");
 
   React.useEffect(() => {
     // 선택한 영화를 가져오고
-    let { selectedYoutuberName } = route.params;
+    let { selectedName } = route.params;
     // 선택한 영화를 setSelectedMovie에 넣는다.
-    setSelectedYoutuberName(selectedYoutuberName);
+    setSelectedName(selectedName);
   }, []);
 
   
@@ -75,23 +75,6 @@ const Apply = ({ navigation, route }) => {
       </View>
     );
   }
-
-  function componentWillUnmount(){
-    fetch("http://3.36.228.255:8088/jpa/S3", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            "url": {selectedYoutuberName},
-            "code": {name}
-        }),
-      }).then((response) => console.log(response))
-      .catch((error) => {
-        console.log(error)
-        Alert("ERROR! Check your log")
-    })  
-    }
 
   function renderForm() {
     return (
@@ -152,7 +135,7 @@ const Apply = ({ navigation, route }) => {
           keyboardType="default"
           style={styles.formContents}
         />
-        {console.log({ name }, { email }, { title }, { requests }, { story }, {selectedYoutuberName})}
+        {console.log({ name }, { email }, { title }, { requests }, { story }, {selectedName})}
 
         <Text
           // 여기에 fetch 사용하여서 데이터베이스에 입력된 값들 전송
@@ -164,13 +147,13 @@ const Apply = ({ navigation, route }) => {
                   "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    "url": selectedYoutuberName,
+                    "url": selectedName,
                     "code": name
                 }),
               }).then((response) => console.log(response))
               .catch((error) => {
                 console.log(error)
-                Alert("ERROR! Check your log")
+                console.log("ERROR! Check your log")
             })  
             alert("신청 완료!");
             navigation.navigate("Home");
@@ -186,15 +169,15 @@ const Apply = ({ navigation, route }) => {
   return (
     <SafeAreaView
       style={{
-        backgroundColor: COLORS.white,
+        backgroundColor: COLORS.black,
         flex: 1,
       }}
     >
       {renderHeaderBar()}
 
       <ScrollView
-        contentContainerStyle={{ flex: 1, backgroundColor: COLORS.white }}
-        style={{ backgroundColor: COLORS.white }}
+        contentContainerStyle={{  backgroundColor: COLORS.black }}
+        style={{ backgroundColor: COLORS.black }}
       >
         {renderForm()}
       </ScrollView>
@@ -207,18 +190,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginLeft: 66,
-    color: COLORS.black,
+    color: COLORS.white,
     ...FONTS.h1,
   },
   formStyle: {
     margin: 16,
-    color: COLORS.black,
+    color: COLORS.white,
     ...FONTS.h2,
   },
   formContents: {
     color: COLORS.black,
     borderRadius: 15,
-    backgroundColor: "#cccccc",
+    backgroundColor: COLORS.white,
     width: 330,
     paddingTop: 10,
     padding: 13,
@@ -226,7 +209,7 @@ const styles = StyleSheet.create({
   formSubmit: {
     alignItems: "center",
     justifyContent: "center",
-    color: COLORS.black,
+    color: COLORS.white,
     ...FONTS.h2,
     paddingTop: 10,
     padding: 13,

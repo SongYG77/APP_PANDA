@@ -12,12 +12,7 @@ import {
   Animated,
   ScrollView,
 } from "react-native";
-import { Extrapolate } from "react-native-reanimated";
-
-import { Profiles, ProgressBar } from "../components";
-
 import { youtubers ,dummyData, COLORS, SIZES, FONTS, icons, images } from "../constants";
-import { newSeason } from "../constants/dummy";
 
 
 const Home = ({ navigation }) => {
@@ -251,7 +246,7 @@ const Home = ({ navigation }) => {
     );
   }
 
-  function renderContinueWatchingSection() {
+  function renderYoutuberSection() {
     return (
       <View
         style={{
@@ -313,18 +308,150 @@ const Home = ({ navigation }) => {
 
                             {/* Name */}
                             <Text style={{marginTop:SIZES.base, color: COLORS.white, ...FONTS.h4, }}>{item.name}</Text>
+                        
+                        </View>
+                    </TouchableWithoutFeedback>
+                )
+            }}
+        />
+      </View>
+    );
+  }
 
+  function renderCelebritySection() {
+    return (
+      <View
+        style={{
+          marginTop: SIZES.padding,
+        }}
+      >
+        {/* Header */}
+        <View
+          style={{
+            flexDirection: "row",
+            paddingHorizontal: SIZES.padding,
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ flex: 1, color: COLORS.white, ...FONTS.h2 }}>
+            Celebritys
+          </Text>
+          <Image
+            source={icons.right_arrow}
+            style={{
+              width: 20,
+              height: 20,
+              tintColor: COLORS.primary,
+            }}
+          />
+        </View>
 
-                            {/* Progress Bar */}
-                            {/* <ProgressBar
-                                containerStyle={{
-                                    marginTop:SIZES.radius,
+        {/* List */}
+        <FlatList
+            horizontal
+            // 수평 스크롤 표시기
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
+                marginTop: SIZES.padding
+            }}
+            data={youtubers.Celebrity}
+            keyExtractor={item=>`${item.id}`}
+            renderItem={({item, index})=>{
+                return (
+                    <TouchableWithoutFeedback
+                        onPress={()=>navigation.navigate("CelebrityDetail", {selectedCelebrity: item})}
+                    >
+                        <View
+                            style={{
+                                marginLeft: index == 0 ? SIZES.padding : 20,
+                                marginRight: index == dummyData.continueWatching.length - 1 ? SIZES.padding : 0,
+                            }}
+                        >
+                            {/* 썸네일 */}  
+                            <Image
+                                source={item.thumbnail}
+                                resizeMode="cover"
+                                style={{
+                                    width: SIZES.width / 3,
+                                    height: (SIZES.width / 3) + 60,
+                                    borderRadius: 20
                                 }}
-                                barStyle={{
-                                    height: 3
+                            />
+
+                            {/* Name */}
+                            <Text style={{marginTop:SIZES.base, color: COLORS.white, ...FONTS.h4, }}>{item.name}</Text>
+                        
+                        </View>
+                    </TouchableWithoutFeedback>
+                )
+            }}
+        />
+      </View>
+    );
+  }
+
+  function renderSportsSection() {
+    return (
+      <View
+        style={{
+          marginTop: SIZES.padding,
+        }}
+      >
+        {/* Header */}
+        <View
+          style={{
+            flexDirection: "row",
+            paddingHorizontal: SIZES.padding,
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ flex: 1, color: COLORS.white, ...FONTS.h2 }}>
+            Sports
+          </Text>
+          <Image
+            source={icons.right_arrow}
+            style={{
+              width: 20,
+              height: 20,
+              tintColor: COLORS.primary,
+            }}
+          />
+        </View>
+
+        {/* List */}
+        <FlatList
+            horizontal
+            // 수평 스크롤 표시기
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
+                marginTop: SIZES.padding
+            }}
+            data={youtubers.youtuber}
+            keyExtractor={item=>`${item.id}`}
+            renderItem={({item, index})=>{
+                return (
+                    <TouchableWithoutFeedback
+                        onPress={()=>navigation.navigate("YoutuberDetail", {selectedYoutuber: item})}
+                    >
+                        <View
+                            style={{
+                                marginLeft: index == 0 ? SIZES.padding : 20,
+                                marginRight: index == dummyData.continueWatching.length - 1 ? SIZES.padding : 0,
+                            }}
+                        >
+                            {/* 썸네일 */}
+                            <Image
+                                source={item.thumbnail}
+                                resizeMode="cover"
+                                style={{
+                                    width: SIZES.width / 3,
+                                    height: (SIZES.width / 3) + 60,
+                                    borderRadius: 20
                                 }}
-                                barPercentage={item.overallProgress}
-                            /> */}
+                            />
+
+                            {/* Name */}
+                            <Text style={{marginTop:SIZES.base, color: COLORS.white, ...FONTS.h4, }}>{item.name}</Text>
                         
                         </View>
                     </TouchableWithoutFeedback>
@@ -351,7 +478,9 @@ const Home = ({ navigation }) => {
       >
         {renderNewSeasonSection()}
         {renderDots()}
-        {renderContinueWatchingSection()}
+        {renderYoutuberSection()}
+        {renderCelebritySection()}
+        {renderSportsSection()}
       </ScrollView>
     </SafeAreaView>
   );

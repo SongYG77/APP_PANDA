@@ -15,15 +15,15 @@ import LinearGradient from "react-native-linear-gradient";
 
 
 // 네비게이션 경로
-const YoutuberDetail = ({ navigation, route }) => {
-  const [selectedYoutuber, setSelectedYoutuber] = React.useState(null);
+const CelebrityDetail = ({ navigation, route }) => {
+  const [selectedCelebrity, setSelectedCelebrity] = React.useState(null);
 
   // 선택된 영화를 지속적으로 추적
   React.useEffect(() => {
     // 선택한 영화를 가져오고
-    let { selectedYoutuber } = route.params;
+    let { selectedCelebrity } = route.params;
     // 선택한 영화를 setSelectedMovie에 넣는다.
-    setSelectedYoutuber(selectedYoutuber);
+    setSelectedCelebrity(selectedCelebrity);
   }, []);
 
   function renderHeaderBar() {
@@ -89,7 +89,7 @@ const YoutuberDetail = ({ navigation, route }) => {
   function renderHeaderSection() {
     return (
       <ImageBackground
-        source={selectedYoutuber?.details?.image}
+        source={selectedCelebrity?.details?.image}
         resizeMode="cover"
         style={{
           width: "100%",
@@ -130,7 +130,7 @@ const YoutuberDetail = ({ navigation, route }) => {
                   ...FONTS.h1,
                 }}
               >
-                {selectedYoutuber?.name}
+                {selectedCelebrity?.name}
               </Text>
             </LinearGradient>
           </View>
@@ -164,7 +164,7 @@ const YoutuberDetail = ({ navigation, route }) => {
               ...FONTS.h4,
             }}
           >
-            {selectedYoutuber?.details?.age}
+            {selectedCelebrity?.details?.age}
           </Text>
         </View>
 
@@ -183,7 +183,7 @@ const YoutuberDetail = ({ navigation, route }) => {
               ...FONTS.h4,
             }}
           >
-            {selectedYoutuber?.details?.genre}
+            {selectedCelebrity?.details?.genre}
           </Text>
         </View>
 
@@ -202,7 +202,7 @@ const YoutuberDetail = ({ navigation, route }) => {
               ...FONTS.h4,
             }}
           >
-            {selectedYoutuber?.details?.subscriber}
+            {selectedCelebrity?.details?.subscriber}
           </Text>
         </View>
 
@@ -251,7 +251,7 @@ const YoutuberDetail = ({ navigation, route }) => {
           >
             <Text style={{ flex: 1, color: COLORS.white, ...FONTS.h2 }}>
                 {/* 해당 유튜버 자세한 설명 */}
-              {selectedYoutuber?.name} 설명
+              {selectedCelebrity?.name} 설명
             </Text>
           </View>
         </View>
@@ -268,11 +268,11 @@ const YoutuberDetail = ({ navigation, route }) => {
             
           }}
           onPress={() =>
-            navigation.navigate('Apply', {selectedName: selectedYoutuber.name})
+            navigation.navigate('Apply', {selectedName: selectedCelebrity.name})
           }
         >
           <Text style={{ ...FONTS.h2 }}>
-            {selectedYoutuber?.name}에게 신청하기!
+            {selectedCelebrity?.name}에게 신청하기!
           </Text>
         </TouchableOpacity>
       </View>
@@ -310,4 +310,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default YoutuberDetail;
+export default CelebrityDetail;
