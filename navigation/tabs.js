@@ -1,16 +1,21 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 
-import { Home } from "../screens"
+import { ApplyList, Home} from "../screens"
 import s3  from "../screens/s3";
 import VideoScreen from "../screens/VideoScreen"
 import { COLORS, icons } from "../constants"
+import List from "../screens/ApplyList" //신청리스트 추가
+import Profile from "../screens/Profile"
 
 import { TabIcon } from "../components"
+import { useState } from "react";
 
 const Tab = createBottomTabNavigator()
 
 const Tabs = () => {
+    const [test, settest] = useState('test')
+    const [loginINFO, setloginINFO] = useState(null)
     return (
         <Tab.Navigator
             tabBarOptions={{
@@ -29,7 +34,7 @@ const Tabs = () => {
         >
             <Tab.Screen
                 name="Home"
-                component={Home}
+                children={({navigation}) => <Home loginINFO = {loginINFO}  navigation = {navigation} setloginINFO = {setloginINFO}/>}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <TabIcon
@@ -39,7 +44,7 @@ const Tabs = () => {
                     )
                 }}
             />
-            <Tab.Screen
+            {/* <Tab.Screen
                 name="Upload"
                 component={s3}
                 options={{
@@ -50,7 +55,7 @@ const Tabs = () => {
                         />
                     )
                 }}
-            />
+            /> */}
             <Tab.Screen
                 name="Search"
                 component={VideoScreen}
@@ -65,7 +70,7 @@ const Tabs = () => {
             />
             <Tab.Screen
                 name="Profile"
-                component={Home}
+                children={({navigation}) => <Profile loginINFO = {loginINFO}  navigation = {navigation} setloginINFO = {setloginINFO} />}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <TabIcon

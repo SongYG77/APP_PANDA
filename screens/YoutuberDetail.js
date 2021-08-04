@@ -17,13 +17,16 @@ import LinearGradient from "react-native-linear-gradient";
 // 네비게이션 경로
 const YoutuberDetail = ({ navigation, route }) => {
   const [selectedYoutuber, setSelectedYoutuber] = React.useState(null);
+  const [selectedUser, setSelectedUser] = React.useState(null);
 
   // 선택된 영화를 지속적으로 추적
   React.useEffect(() => {
     // 선택한 영화를 가져오고
-    let { selectedYoutuber } = route.params;
+    let { selectedYoutuber, selectedUser } = route.params;
     // 선택한 영화를 setSelectedMovie에 넣는다.
     setSelectedYoutuber(selectedYoutuber);
+    setSelectedUser(selectedUser)
+    console.log(selectedUser)
   }, []);
 
   function renderHeaderBar() {
@@ -60,7 +63,7 @@ const YoutuberDetail = ({ navigation, route }) => {
         </TouchableOpacity>
 
         {/* Apply Button */}
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             alignItems: "center",
             justifyContent: "center",
@@ -70,7 +73,7 @@ const YoutuberDetail = ({ navigation, route }) => {
             backgroundColor: COLORS.transparentBlack,
           }}
           onPress={() =>
-            navigation.navigate('Apply')
+            navigation.navigate('Apply', {selectedName: selectedYoutuber.name})
           }
         >
           <Image
@@ -81,7 +84,7 @@ const YoutuberDetail = ({ navigation, route }) => {
               tintColor: COLORS.white,
             }}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     );
   }
@@ -89,7 +92,7 @@ const YoutuberDetail = ({ navigation, route }) => {
   function renderHeaderSection() {
     return (
       <ImageBackground
-        source={selectedYoutuber?.details?.image}
+        source={selectedYoutuber?.details?.image}//여기 수정하기 여기도 requir 사용 삘
         resizeMode="cover"
         style={{
           width: "100%",
@@ -249,9 +252,9 @@ const YoutuberDetail = ({ navigation, route }) => {
               flexDirection: "row",
             }}
           >
-            <Text style={{ flex: 1, color: COLORS.white, ...FONTS.h2 }}>
+            <Text style={{ flex: 1, color: COLORS.white, ...FONTS.h4, marginBottom:25 }}>
                 {/* 해당 유튜버 자세한 설명 */}
-              {selectedYoutuber?.name} 설명
+                {selectedYoutuber?.details?.explain}
             </Text>
           </View>
         </View>

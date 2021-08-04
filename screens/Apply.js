@@ -9,6 +9,8 @@ import {
   StyleSheet,
   TextInput,
   Button,
+  KeyboardAvoidingView,
+  Alert,
 } from "react-native";
 
 import {
@@ -21,12 +23,12 @@ import {
   images,
 } from "../constants";
 
-const Apply = ({ navigation, route }) => {
-  const [name, onChangeName] = useState("성함을 입력해주세요.");
-  const [email, onChangeEmail] = useState("이메일을 입력해주세요.");
-  const [title, onChangeTitle] = useState("제목을 입력해주세요.");
-  const [requests, onChangeRequests] = useState("요청사항을 입력해주세요.");
-  const [story, onChangeStory] = useState("사연을 입력해주세요.");
+const Apply = ({ navigation, route, }) => {
+  const [name, onChangeName] = useState("");
+  const [email, onChangeEmail] = useState("");
+  const [title, onChangeTitle] = useState("");
+  const [requests, onChangeRequests] = useState("");
+  const [story, onChangeStory] = useState("");
   const [selectedName, setSelectedName] = useState(null);
   //const [userId, setUserId] = userState("캡스톤");
 
@@ -141,21 +143,36 @@ const Apply = ({ navigation, route }) => {
           // 여기에 fetch 사용하여서 데이터베이스에 입력된 값들 전송
           onPress={() => {
             // {componentWillUnmount()}
-            fetch("http://3.36.228.255:8088/jpa/S3", {
+            fetch("http://3.36.228.255:8088/jpa/apply", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    "url": selectedName,
-                    "code": name
+                    "name": name,
+                    "email": email,
+                    "title":title,
+                    "request":requests,
+                    "story" : story,
+                    "selectedYoutuberName" : selectedName,
+                    "code" : null
                 }),
               }).then((response) => console.log(response))
               .catch((error) => {
                 console.log(error)
                 console.log("ERROR! Check your log")
             })  
-            alert("신청 완료!");
+            Alert.alert("신청 완료!",
+              "신청이 완료되었습니다.",
+              [
+                {
+                  text:"확인",
+                  onPress: ()=> console.log("신청확인")
+                }
+              ],
+              {cancelable : false}
+            
+            );
             navigation.navigate("Home");
           }}
           style={styles.formSubmit}
@@ -174,13 +191,14 @@ const Apply = ({ navigation, route }) => {
       }}
     >
       {renderHeaderBar()}
-
+      <KeyboardAvoidingView behavior='padding'>
       <ScrollView
         contentContainerStyle={{  backgroundColor: COLORS.black }}
         style={{ backgroundColor: COLORS.black }}
       >
         {renderForm()}
       </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

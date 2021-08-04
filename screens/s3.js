@@ -14,8 +14,9 @@ import { RNS3 } from "react-native-aws3";
 import { launchImageLibrary } from "react-native-image-picker";
 import { ScrollView, State } from "react-native-gesture-handler";
 import Video from 'react-native-video';
+import App from "../App";
 
-const UploadScreen = () => {
+const UploadScreen = ({ navigation, route }) => {
   // class에서 this.state.filePath, this.setState 와 같은 뜻이다.
   const [filePath, setFilePath] = useState({});
   const [uploadSuccessMessage, setUploadSuccessMessage] = useState("");
@@ -26,6 +27,44 @@ const UploadScreen = () => {
     }
     return value;
   };
+
+  function renderHeaderBar() {
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          marginTop: 16,
+          paddingHorizontal: SIZES.padding,
+        }}
+      >
+        {/* Back Button */}
+        <TouchableOpacity
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            width: 50,
+            height: 50,
+            borderRadius: 20,
+            backgroundColor: "#cccccc",
+          }}
+          onPress={() => navigation.goBack()}
+        >
+          <Image
+            source={icons.left_arrow}
+            style={{
+              width: 20,
+              height: 20,
+              tintColor: COLORS.white,
+            }}
+          />
+        </TouchableOpacity> 
+        {/* 최상단 이름 */}
+        <Text style={styles.textTitle}>비디오 업로드</Text>
+      </View>
+    );
+  }
+  
 
   const chooseFile = () => {
     let options = {
@@ -64,14 +103,12 @@ const UploadScreen = () => {
         type: "video/mp4",
       },
       {
-        keyPrefix: "myuploads/", // Ex. myuploads/
-        bucket: "react-native-s3-bucket", // Ex. aboutreact
-        region: "ap-northeast-2", // Ex. ap-south-1
-        accessKey: "",
-        // Ex. AKIH73GS7S7C53M46OQ
-        secretKey: "",
-        // Ex. Pt/2hdyro977ejd/h2u8n939nh89nfdnf8hd8f8fd
-        successActionStatus: 201,
+        // keyPrefix: , // Ex. myuploads/
+        // bucket: , // Ex. aboutreact
+        // region: , // Ex. ap-south-1
+        // accessKey: ,
+        // secretKey: ,
+        // successActionStatus: 201,
       }
     )
       .progress((progress) =>
@@ -110,6 +147,17 @@ const UploadScreen = () => {
   const updateServer = () => {
     // console.log(video_uri);
     let show_code = Math.random().toString(36).substr(2, 11);
+    Alert.alert("동영상 코드",
+    `${show_code}`,
+              [
+                {
+                  text:"확인",
+                  onPress: ()=> console.log("신청확인")
+                }
+              ],
+              {cancelable : false}
+            
+            );
     fetch("http://3.36.228.255:8088/jpa/S3", {
       method: "POST",
       headers: {
@@ -134,32 +182,30 @@ const UploadScreen = () => {
     );
   };
 
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.titleText}>Video 업로드</Text>
+      {renderHeaderBar()}
+      <Image source ={require("../assets/images/video_panda.png")} style={{width:380, height:300, resizeMode:"contain", marginBottom:50, marginTop:80}}/>
       <View style={styles.container}>
         {filePath.uri ? (
           <>
-            <Text style={styles.textStyle}>{filePath.uri}</Text>
             <TouchableOpacity
               activeOpacity={0.5}
-              style={styles.buttonStyleGreen}
+              style={styles.buttonStyle}
               onPress={uploadFile}
             >
-              <Text style={styles.textStyleWhite}>Upload Video</Text>
+              <Text style={styles.textStyleWhite}>비디오 업로드</Text>
             </TouchableOpacity>
           </>
-        ) : null}
-        {uploadSuccessMessage ? (
-          <Text style={styles.textStyleGreen}>{uploadSuccessMessage}</Text>
         ) : null}
         {video_uri ? (
           <TouchableOpacity
             activeOpacity={0.5}
-            style={styles.buttonStyleGreen}
+            style={styles.buttonStyle}
             onPress={updateServer}
           >
-            <Text style={styles.textStyleWhite}>Update Server</Text>
+            <Text style={styles.textStyleWhite}>메일로 전송하기</Text>
           </TouchableOpacity>
         ) : null}
         <TouchableOpacity
@@ -167,7 +213,15 @@ const UploadScreen = () => {
           style={styles.buttonStyle}
           onPress={chooseFile}
         >
-          <Text style={styles.textStyleWhite}>Choose Video</Text>
+          <Text style={styles.textStyleWhite}>비디오 선택</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={styles.buttonStyle}
+          onPress={() => navigation.popToTop()}
+        >
+          <Text style={styles.textStyleWhite}>처음으로</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -177,6 +231,13 @@ const UploadScreen = () => {
 export default UploadScreen;
 
 const styles = StyleSheet.create({
+  textTitle: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 50,
+    color: COLORS.white,
+    ...FONTS.h1,
+  },
   container: {
     flex: 1,
     padding: 10,
@@ -187,11 +248,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     paddingVertical: 20,
-    color: "white",
+    color: "black",
   },
   textStyle: {
     padding: 10,
-    color: "white",
+    color: "black",
     textAlign: "center",
   },
   textStyleGreen: {
@@ -200,13 +261,17 @@ const styles = StyleSheet.create({
   },
   textStyleWhite: {
     padding: 10,
-    color: "white",
+    color: "black",
+    ...FONTS.h2
   },
   buttonStyle: {
     alignItems: "center",
-    backgroundColor: "orange",
+    backgroundColor: "white",
     marginVertical: 10,
     width: "100%",
+    borderRadius:15,
+    height : 50,
+    marginBottom:20
   },
   buttonStyleGreen: {
     alignItems: "center",

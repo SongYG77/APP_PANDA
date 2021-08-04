@@ -1,5 +1,5 @@
 import { TestScheduler } from "@jest/core";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   SafeAreaView,
   View,
@@ -12,11 +12,38 @@ import {
   Animated,
   ScrollView,
 } from "react-native";
+import { useState } from "react";
 import { youtubers ,dummyData, COLORS, SIZES, FONTS, icons, images } from "../constants";
 
 
-const Home = ({ navigation }) => {
+const Home = ({ navigation, loginINFO, setloginINFO }) => {
+
+
   const newSeasonScrollX = React.useRef(new Animated.Value(0)).current;
+  const [logout, setlogout] = useState(0)
+
+  var celdata// 서버에서 받은 데이터를 저장
+  let SingerVAR =[]
+  var flagvr = '0'
+  
+  function getAlldata() {
+    fetch(`http://3.36.228.255:8088/jpa/cel`)
+              .then((response) => response.json())
+              .then((response) => {celdata = response; 
+              
+              })
+    flagvr = '1'
+    console.log('finish fetch')
+  }// 서버에서 받아오기
+
+  React.useEffect(() => {
+    if(logout == 1){
+      alert('로그아웃 되었습니다.')
+      setloginINFO(null)
+      setlogout(0)
+    }
+  }, [logout]);
+
 
   function renderHeader() {
     return (
@@ -39,7 +66,7 @@ const Home = ({ navigation }) => {
           onPress={() => console.log("Profile")}
         >
           <Image
-            source={images.profile_photo}
+            source={icons.panda}
             style={{
               width: 40,
               height: 40,
@@ -49,14 +76,17 @@ const Home = ({ navigation }) => {
         </TouchableOpacity>
 
         {/* Screen Mirror */}
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             justifyContent: "center",
             alignItems: "center",
             width: 50,
             height: 50,
           }}
-          onPress={() => console.log("Screen Mirror")}
+          onPress={() => {
+            setlogout(1)
+
+          }}
         >
           <Image
             source={icons.airplay}
@@ -66,12 +96,13 @@ const Home = ({ navigation }) => {
               tintColor: COLORS.primary,
             }}
           ></Image>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     );
   }
 
   function renderNewSeasonSection() {
+    
     return (
       <Animated.FlatList
         horizontal // 세로로 쌓는 대신 가로로 나란히 렌더링
@@ -84,12 +115,13 @@ const Home = ({ navigation }) => {
         contentContainerStyle={{
           marginTop: SIZES.radius,
         }}
-        data={youtubers.youtuber} // 화면에 렌더링 되는 실제 값들이 저장되어 있다.
-        keyExtractor={(item) => `${item.id}`} // 
+        data={youtubers.Celebrity} // 여기를 수정해야함. 
+        keyExtractor={(item) => `${item.id}`} 
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { x: newSeasonScrollX } } }],
           { useNativeDriver: false }
         )}
+        
         renderItem={({ item, index }) => {
           return (
             <TouchableWithoutFeedback
@@ -97,6 +129,7 @@ const Home = ({ navigation }) => {
                 navigation.navigate("YoutuberDetail", { selectedYoutuber: item })
               }
             >
+              
               <View
                 style={{
                   width: SIZES.width,
@@ -105,8 +138,10 @@ const Home = ({ navigation }) => {
                 }}
               >
                 {/* 썸네일 */}
+                {//findsingerThumb(item.name)
+                }
                 <ImageBackground
-                  source={item.thumbnail}
+                  source={item.thumbnail}//여기를 requir thumbnail 로 작성해보기
                   resizeMode="cover"
                   style={{
                     width: SIZES.width * 0.85,
@@ -187,9 +222,13 @@ const Home = ({ navigation }) => {
               </View>
             </TouchableWithoutFeedback>
           );
+          
         }}
       />
+      
     );
+
+  
   }
 
   function renderDots() {
@@ -282,12 +321,12 @@ const Home = ({ navigation }) => {
             contentContainerStyle={{
                 marginTop: SIZES.padding
             }}
-            data={youtubers.youtuber}
+            data={youtubers.youtuber}//이거 역시 수정.
             keyExtractor={item=>`${item.id}`}
             renderItem={({item, index})=>{
                 return (
                     <TouchableWithoutFeedback
-                        onPress={()=>navigation.navigate("YoutuberDetail", {selectedYoutuber: item})}
+                        onPress={()=>navigation.navigate("YoutuberDetail", {selectedYoutuber: item, selectedUser: loginINFO})}
                     >
                         <View
                             style={{
@@ -334,7 +373,7 @@ const Home = ({ navigation }) => {
           }}
         >
           <Text style={{ flex: 1, color: COLORS.white, ...FONTS.h2 }}>
-            Celebritys
+            Celebrity
           </Text>
           <Image
             source={icons.right_arrow}
@@ -426,12 +465,12 @@ const Home = ({ navigation }) => {
             contentContainerStyle={{
                 marginTop: SIZES.padding
             }}
-            data={youtubers.youtuber}
+            data={youtubers.Sports}
             keyExtractor={item=>`${item.id}`}
             renderItem={({item, index})=>{
                 return (
                     <TouchableWithoutFeedback
-                        onPress={()=>navigation.navigate("YoutuberDetail", {selectedYoutuber: item})}
+                        onPress={()=>navigation.navigate("CelebrityDetail", {selectedCelebrity: item})}
                     >
                         <View
                             style={{
@@ -439,7 +478,7 @@ const Home = ({ navigation }) => {
                                 marginRight: index == dummyData.continueWatching.length - 1 ? SIZES.padding : 0,
                             }}
                         >
-                            {/* 썸네일 */}
+                            {/* 썸네일 */}  
                             <Image
                                 source={item.thumbnail}
                                 resizeMode="cover"
@@ -461,7 +500,6 @@ const Home = ({ navigation }) => {
       </View>
     );
   }
-
   return (
     <SafeAreaView
       style={{
@@ -470,17 +508,25 @@ const Home = ({ navigation }) => {
       }}
     >
       {renderHeader()}
-
+      
+   
       <ScrollView
         contentContainerStyle={{
           paddingBottom: 100,
         }}
       >
-        {renderNewSeasonSection()}
-        {renderDots()}
-        {renderYoutuberSection()}
-        {renderCelebritySection()}
-        {renderSportsSection()}
+          {/* {//flagvr == '0' ?  
+          getAlldata()
+          //:null
+          } */}
+          {renderNewSeasonSection()
+          }
+          {renderDots()}
+          {renderYoutuberSection()}
+          {renderCelebritySection()}
+          {renderSportsSection()}
+        
+        
       </ScrollView>
     </SafeAreaView>
   );

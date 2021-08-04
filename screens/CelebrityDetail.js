@@ -60,7 +60,7 @@ const CelebrityDetail = ({ navigation, route }) => {
         </TouchableOpacity>
 
         {/* Apply Button */}
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             alignItems: "center",
             justifyContent: "center",
@@ -70,7 +70,7 @@ const CelebrityDetail = ({ navigation, route }) => {
             backgroundColor: COLORS.transparentBlack,
           }}
           onPress={() =>
-            navigation.navigate('Apply')
+            navigation.navigate('Apply', {selectedName: selectedCelebrity.name})
           }
         >
           <Image
@@ -81,7 +81,7 @@ const CelebrityDetail = ({ navigation, route }) => {
               tintColor: COLORS.white,
             }}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     );
   }
@@ -249,9 +249,9 @@ const CelebrityDetail = ({ navigation, route }) => {
               flexDirection: "row",
             }}
           >
-            <Text style={{ flex: 1, color: COLORS.white, ...FONTS.h2 }}>
+            <Text style={{ flex: 1, color: COLORS.white, ...FONTS.h4, marginBottom:25 }}>
                 {/* 해당 유튜버 자세한 설명 */}
-              {selectedCelebrity?.name} 설명
+              {selectedCelebrity?.details?.explain} 
             </Text>
           </View>
         </View>

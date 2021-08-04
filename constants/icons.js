@@ -9,6 +9,7 @@ const search = require("../assets/icons/search.png");
 const star = require("../assets/icons/star.png");
 const upload = require("../assets/icons/upload.png");
 const apply = require("../assets/icons/apply.png")
+const panda = require("../assets/icons/pandaicon.png")
 
 export default {
     airplay,
@@ -21,5 +22,6 @@ export default {
     search,
     star,
     upload,
-    apply
+    apply,
+    panda
 }
